@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - GoEkskul</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="admin-login-card">
+            <div class="admin-login-header">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Admin Panel</h1>
+                <p>GoEkskul SMK 5</p>
+            </div>
+
+            <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label for="adminPassword">
+                        <i class="fas fa-lock"></i> Admin Password
+                    </label>
+                    <div class="password-input-group">
+                        <input type="password" id="adminPassword" name="password" required
+                               placeholder="Masukkan password admin">
+                        <button type="button" class="toggle-password" onclick="togglePassword('adminPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i> Masuk ke Dashboard
+                </button>
+            </form>
+
+            <div class="admin-login-footer">
+                <a href="GoEkskul (3).html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama
+                </a>
+            </div>
+
+            <div id="adminLoginMessage" class="auth-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script src="js.js"></script>
+    <script>
+        function handleAdminLogin(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('adminPassword').value;
+            const messageDiv = document.getElementById('adminLoginMessage');
+
+            // Simple admin password check (in production, use proper authentication)
+            const adminPassword = 'admin123'; // Change this to a secure password
+
+            if (password === adminPassword) {
+                // Set admin session
+                sessionStorage.setItem('admin_session', JSON.stringify({
+                    loggedIn: true,
+                    loginTime: new Date().toISOString()
+                }));
+
+                messageDiv.className = 'auth-message success';
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> Login berhasil! Mengalihkan...';
+
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 1000);
+            } else {
+                messageDiv.className = 'auth-message error';
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password admin salah!';
+            }
+        }
+
+        // Check if already logged in as admin
+        window.addEventListener('load', () => {
+            const adminSession = sessionStorage.getItem('admin_session');
+            if (adminSession) {
+                const session = JSON.parse(adminSession);
+                if (session.loggedIn) {
+                    window.location.href = 'admin.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

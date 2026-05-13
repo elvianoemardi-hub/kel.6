@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - GoEkskul</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-logo">
+                <i class="fas fa-cog"></i>
+                <span>Admin Dashboard</span>
+            </div>
+            <div class="admin-nav">
+                <button class="admin-nav-btn active" onclick="showSection('dashboard', event)">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('eskul', event)">
+                    <i class="fas fa-graduation-cap"></i> Kelola Eskul
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('pendaftaran', event)">
+                    <i class="fas fa-clipboard-list"></i> Verifikasi Pendaftaran
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('users', event)">
+                    <i class="fas fa-users"></i> Kelola Users
+                </button>
+                <button class="admin-nav-btn logout-btn" onclick="adminLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="admin-section active">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                <p>Ringkasan data GoEkskul SMK 5</p>
+            </div>
+
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalEskul">11</h3>
+                        <p>Total Eskul</p>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalUsers">3</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalPendaftaran">2</h3>
+                        <p>Total Pendaftaran</p>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="verifiedPendaftaran">0</h3>
+                        <p>Pendaftaran Terverifikasi</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-recent-activity">
+                <h3>Aktivitas Terbaru</h3>
+                <div id="recentActivity" class="activity-list">
+                    <!-- Activity items will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Kelola Eskul Section -->
+        <section id="eskul" class="admin-section">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-graduation-cap"></i> Kelola Eskul</h2>
+                <button class="btn btn-primary" onclick="showAddEskulModal()">
+                    <i class="fas fa-plus"></i> Tambah Eskul Baru
+                </button>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table" id="eskulTable">
+                    <thead>
+                        <tr>
+                            <th>Nama Eskul</th>
+                            <th>Kategori</th>
+                            <th>Jadwal</th>
+                            <th>Pembina</th>
+                            <th>Prestasi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eskulTableBody">
+                        <!-- Eskul data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Verifikasi Pendaftaran Section -->
+        <section id="pendaftaran" class="admin-section">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-clipboard-list"></i> Verifikasi Pendaftaran</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterPendaftaran('all', event)">Semua</button>
+                    <button class="filter-btn" onclick="filterPendaftaran('pending', event)">Pending</button>
+                    <button class="filter-btn" onclick="filterPendaftaran('approved', event)">Approved</button>
+                    <button class="filter-btn" onclick="filterPendaftaran('rejected', event)">Rejected</button>
+                </div>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table" id="pendaftaranTable">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>NIS</th>
+                            <th>Kelas</th>
+                            <th>Eskul Utama</th>
+                            <th>Eskul Cadangan</th>
+                            <th>Status</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendaftaranTableBody">
+                        <!-- Pendaftaran data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Kelola Users Section -->
+        <section id="users" class="admin-section">
+            <div class="admin-section-header">
+                <h2><i class="fas fa-users"></i> Kelola Users</h2>
+                <button class="btn btn-primary" onclick="showAddUserModal()">
+                    <i class="fas fa-plus"></i> Tambah User
+                </button>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>NIS</th>
+                            <th>Username</th>
+                            <th>Status</th>
+                            <th>Dibuat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add/Edit Eskul Modal -->
+    <div class="modal" id="eskulModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="eskulModalTitle">Tambah Eskul</h2>
+                <span class="close" onclick="closeModal('eskulModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="eskulForm">
+                    <input type="hidden" id="eskulId" name="id">
+
+                    <div class="form-group">
+                        <label for="eskulNama">Nama Eskul</label>
+                        <input type="text" id="eskulNama" name="nama" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eskulKategori">Kategori</label>
+                        <input type="text" id="eskulKategori" name="kategori" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eskulDeskripsi">Deskripsi</label>
+                        <textarea id="eskulDeskripsi" name="deskripsi" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eskulJadwal">Jadwal</label>
+                            <input type="text" id="eskulJadwal" name="jadwal" placeholder="Contoh: Senin 14.00-15.30">
+                        </div>
+                        <div class="form-group">
+                            <label for="eskulPembina">Pembina</label>
+                            <input type="text" id="eskulPembina" name="pembina">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eskulPrestasi">Prestasi</label>
+                        <input type="text" id="eskulPrestasi" name="prestasi" placeholder="🏆 Juara 1 Lomba...">
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('eskulModal')">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Tambah User</h2>
+                <span class="close" onclick="closeModal('userModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="userId" name="id">
+
+                    <div class="form-group">
+                        <label for="userFullname">Nama Lengkap</label>
+                        <input type="text" id="userFullname" name="fullname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">Email</label>
+                        <input type="email" id="userEmail" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userNis">NIS</label>
+                        <input type="text" id="userNis" name="nis" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userUsername">Username</label>
+                        <input type="text" id="userUsername" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPassword">Password</label>
+                        <input type="password" id="userPassword" name="password" required>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('userModal')">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div class="modal" id="verificationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Verifikasi Pendaftaran</h2>
+                <span class="close" onclick="closeModal('verificationModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="verificationDetails">
+                    <!-- Pendaftaran details will be populated here -->
+                </div>
+
+                <div class="verification-actions">
+                    <button class="btn btn-success" onclick="verifyPendaftaran('approved')">
+                        <i class="fas fa-check"></i> Approve
+                    </button>
+                    <button class="btn btn-danger" onclick="verifyPendaftaran('rejected')">
+                        <i class="fas fa-times"></i> Reject
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal('verificationModal')">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
